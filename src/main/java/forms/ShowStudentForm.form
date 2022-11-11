@@ -12,7 +12,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="8b112" class="javax.swing.JTable" binding="studentTableModel">
+          <component id="8b112" class="javax.swing.JTable" binding="studentTable">
             <constraints/>
             <properties/>
           </component>
@@ -27,6 +27,18 @@
             <constraints/>
             <properties>
               <text value="Añadir"/>
+            </properties>
+          </component>
+          <component id="aa5c1" class="javax.swing.JButton" binding="deleteButton">
+            <constraints/>
+            <properties>
+              <text value="Borrar"/>
+            </properties>
+          </component>
+          <component id="fed4b" class="javax.swing.JButton" binding="modifyButton">
+            <constraints/>
+            <properties>
+              <text value="Modificar"/>
             </properties>
           </component>
         </children>

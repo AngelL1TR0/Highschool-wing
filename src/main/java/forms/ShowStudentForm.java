@@ -3,6 +3,7 @@ package forms;
 import service.StudentsService;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -10,15 +11,17 @@ import java.awt.event.WindowEvent;
 public class ShowStudentForm {
 
     private JPanel mainPanel;
-    private JTable studentTableModel;
+    private JTable studentTable;
     private JButton addStudentButton;
+    private JButton deleteButton;
+    private JButton modifyButton;
     private StudentsService studentsService;
 
     public ShowStudentForm(StudentsService studentsService) {
         this.studentsService = studentsService;
 
         StudentTableModel studentTableModel = new StudentTableModel(studentsService.list());
-        this.studentTableModel.setModel(studentTableModel);
+        this.studentTable.setModel(studentTableModel);
 
         addStudentButton.addActionListener(e -> {
             // Obtenemos la ventana en la que está este formulario
@@ -40,6 +43,7 @@ public class ShowStudentForm {
                 }
             });
         });
+
     }
 
     public static void main(String[] args) {

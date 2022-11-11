@@ -19,9 +19,27 @@ public class StudentsService {
         }
     }
 
+    public boolean update(Student student) {
+        if(students.containsKey(student.getNif())) {
+            students.put(student.getNif(), student);
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public List<Student> list() {
         return new ArrayList<>(
                 students.values()
         );
+    }
+
+    public boolean deleteStudent(String nif) {
+        if(students.containsKey(nif)) {
+            students.remove(nif);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

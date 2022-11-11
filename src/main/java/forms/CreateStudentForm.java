@@ -39,8 +39,5 @@ public class CreateStudentForm {
                     }
                 }
         );
-        guardarButton.addActionListener(actionEvent -> {
-
-        });
     }
 }
