@@ -5,6 +5,8 @@ import service.StudentsService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -44,7 +46,36 @@ public class ShowStudentForm {
             });
         });
 
+        deleteButton.addActionListener(actionEvent -> {
+            int select = studentTable.getSelectedRow();
+            if (select != 1) {
+                studentTableModel.delete(select);
+                studentTableModel.fireTableDataChanged();
+
+            }
+        });
+        modifyButton.addActionListener(actionEvent -> {
+            Window frame = SwingUtilities.windowForComponent(mainPanel);
+            JDialog dialog = new JDialog(frame, "Modificar estudiante", Dialog.ModalityType.DOCUMENT_MODAL);
+            CreateStudentForm createStudentForm = new CreateStudentForm(studentsService);
+
+            dialog.setContentPane(createStudentForm.mainPanel);
+            dialog.pack();
+            dialog.setVisible(true);
+
+            int select = studentTable.getSelectedRow();
+
+            dialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    studentTableModel.setStudents(studentsService.list());
+                    studentTableModel.fireTableDataChanged();
+                }
+
+            });
+        });
     }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
