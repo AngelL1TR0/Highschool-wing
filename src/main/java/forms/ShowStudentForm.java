@@ -1,9 +1,9 @@
 package forms;
 
+import entity.Student;
 import service.StudentsService;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +17,9 @@ public class ShowStudentForm {
     private JButton addStudentButton;
     private JButton deleteButton;
     private JButton modifyButton;
+    private JPanel buttonsPanel;
+    private JButton estudiantesButton;
+    private JButton gruposButton;
     private StudentsService studentsService;
 
     public ShowStudentForm(StudentsService studentsService) {
@@ -46,36 +49,52 @@ public class ShowStudentForm {
             });
         });
 
-        deleteButton.addActionListener(actionEvent -> {
-            int select = studentTable.getSelectedRow();
-            if (select != 1) {
-                studentTableModel.delete(select);
+        deleteButton.addActionListener(e -> {
+            int selectedRow = studentTable.getSelectedRow();
+            String selectedNif = studentTableModel.getStudent(selectedRow).getNif();
+            if (studentsService.deleteStudent(selectedNif)) {
+                studentTableModel.setStudents(studentsService.list());
                 studentTableModel.fireTableDataChanged();
+                JOptionPane.showMessageDialog(mainPanel, "Estudiante eliminado");
 
+            } else {
+                JOptionPane.showMessageDialog(mainPanel, "No se ha podido eliminar el estudiante");
             }
         });
-        modifyButton.addActionListener(actionEvent -> {
+        modifyButton.addActionListener(e -> {
             Window frame = SwingUtilities.windowForComponent(mainPanel);
-            JDialog dialog = new JDialog(frame, "Modificar estudiante", Dialog.ModalityType.DOCUMENT_MODAL);
-            CreateStudentForm createStudentForm = new CreateStudentForm(studentsService);
 
-            dialog.setContentPane(createStudentForm.mainPanel);
-            dialog.pack();
-            dialog.setVisible(true);
+            int selectedRow = studentTable.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(frame, "No hay nada seleccionado");
+            } else {
+                Student student = studentTableModel.getStudent(selectedRow);
 
-            int select = studentTable.getSelectedRow();
+                JDialog dialog = new JDialog(frame, "Modificar estudiante", Dialog.ModalityType.DOCUMENT_MODAL);
+                // Creamos el formulario
+                ModifyStudentForm form = new ModifyStudentForm(studentsService, student);
+                // Asignamos el formulario al dialog
+                dialog.setContentPane(form.mainPanel);
+                dialog.pack();
+                dialog.setVisible(true);
 
-            dialog.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    studentTableModel.setStudents(studentsService.list());
-                    studentTableModel.fireTableDataChanged();
-                }
+                dialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        studentTableModel.setStudents(studentsService.list());
+                        studentTableModel.fireTableDataChanged();
+                    }
+                });
+            }
+            gruposButton.addActionListener(actionEvent -> {
 
             });
+            estudiantesButton.addActionListener(actionEvent -> {
+
+            });
+
         });
     }
-
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();

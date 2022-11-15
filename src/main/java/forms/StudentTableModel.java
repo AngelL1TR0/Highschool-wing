@@ -72,4 +72,8 @@ public class StudentTableModel extends AbstractTableModel {
     public void delete(int selectedRow) {
         students.remove(selectedRow);
     }
+
+    public Student getStudent(int index) {
+        return students.get(index);
+    }
 }
